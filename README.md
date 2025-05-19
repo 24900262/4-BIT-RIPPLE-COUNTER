@@ -24,34 +24,77 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 **Procedure**
 
-Developed By:D.Gayathri
-Register Number :212224220028
-
-
+```TEXT
+ Developed by:D.Gayathri
+ RegisterNumber: 212224220028
 ```
-    
-      module bit(
-      input wire clk, // Clock input
-      output reg [3:0] count // 4-bit counter output
-      );
-     // Counter logic
-     always @(posedge clk) begin
-     if (count == 4'b1111) // Reset when count reaches 15
-          count <= 4'b0000;
-     else
-          count <= count + 1; // Increment count
-      end    
-      endmodule
+```VERILOG
+module RippleCounter(
+   input wire clk,  // Clock input
+   output reg [3:0] count // 4-bit counter output
+);
 
+// Counter logic
+always @(posedge clk) begin
+   if (count == 4'b1111) // Reset when count reaches 15
+       count <= 4'b0000;
+   else
+       count <= count + 1; // Increment count
+end
 
+endmodule
+
+// Testbench
+module RippleCounter_tb;
+
+// Inputs
+reg clk;
+
+// Outputs
+wire [3:0] count;
+
+// Instantiate the counter
+RippleCounter uut(
+   .clk(clk),
+   .count(count)
+);
+
+// Clock generation
+initial begin
+   clk = 0;
+   forever #5 clk = ~clk; // Toggle clock every 5 time units
+end
+
+// Stimulus
+initial begin
+   // Wait for a few clock cycles
+   #10;
+   
+   // Display header
+   $display("Time | Count");
+   $display("-----------------");
+   
+   // Functional table testing
+   // Increment count 16 times and display the count
+   repeat (16) begin
+       #5; // Wait for one clock cycle
+       $display("%4d | %b", $time, count);
+   end
+   
+   // End simulation
+   $finish;
+end
+
+endmodule
 ```
-  
+
 **RTL LOGIC FOR 4 Bit Ripple Counter**
-![d12a](https://github.com/user-attachments/assets/608e0346-9f83-4922-8d16-144b75526153)
+
+![image](https://github.com/user-attachments/assets/d91f7f5c-7320-4e66-9822-c76178538294)
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
-![d12b](https://github.com/user-attachments/assets/70e39a30-0bbd-45e8-9670-9a66c177f242)
+
+![image](https://github.com/user-attachments/assets/a7868c4c-fa53-485f-97c6-a0029262da49)
 
 **RESULTS**
- Thus the 4 Bit Ripple Counter using verilog is implemented and their functionality
- using their functional tables is validated
+Thus the program executed succesfully.
